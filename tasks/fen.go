@@ -1,15 +1,10 @@
 package tasks
 
 import (
+	"algo-3/utils"
 	"fmt"
-	"math"
-	"strconv"
 	"strings"
 )
-
-const binary = float64(2)
-const lineLength = 8
-const fieldCount = 64
 
 type Fen struct {
 }
@@ -21,29 +16,7 @@ func (f Fen) Run(data []string) string {
 }
 
 func (f Fen) calc(position string) string {
-	boards := []uint64{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-
-	handled := strings.Split(position, "/")
-
-	fieldNum := fieldCount
-
-	for _, s := range handled {
-		pow := fieldNum - lineLength
-		fieldNum -= lineLength
-
-		for _, v := range s {
-
-			n, err := strconv.Atoi(string(v))
-
-			if err != nil {
-				f := defineFigure(string(v))
-				boards[f] = uint64(math.Pow(binary, float64(pow))) | boards[f]
-				pow++
-			} else {
-				pow += n
-			}
-		}
-	}
+	boards := utils.ParseFen(position)
 
 	return f.convertResToStr(boards)
 
